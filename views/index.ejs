@@ -1,28 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= lang %>">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/styles/main.css' />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= translations.siteTitle %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/main.css" />
 </head>
-
 <body>
-    <main>
-        
-        <h1><%=title%></h1>
-        <p>Bem vindo(a) ao <strong><%=title%></strong> </p>
-        <a href="/curriculo"> Meu curriculo </a>
+  <header class="topbar">
+    <a class="brand" href="/<%= lang %>"><%= profile.name %></a>
+    <nav class="nav">
+      <a href="#about"><%= translations.navAbout %></a>
+      <a href="#experience"><%= translations.navExperience %></a>
+      <a href="#education"><%= translations.navEducation %></a>
+      <a href="#skills"><%= translations.navSkills %></a>
+      <a href="#highlights"><%= translations.navHighlights %></a>
+      <a href="#certifications"><%= translations.navCertifications %></a>
+      <a href="#projects"><%= translations.navProjects %></a>
+      <a href="#contact"><%= translations.navContact %></a>
+    </nav>
+    <div class="lang-switch">
+      <% supportedLangs.forEach((item) => { %>
+        <a class="<%= item === lang ? 'active' : '' %>" href="/<%= item %>"><%= item %></a>
+      <% }) %>
+    </div>
+  </header>
 
+  <main>
+    <section class="hero" data-aos="fade-up" data-aos-duration="700">
+      <p class="tag"><%= profile.role[lang] %></p>
+      <h1><%= translations.headline %></h1>
+      <p><%= translations.subheadline %></p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#projects"><%= translations.ctaProjects %></a>
+        <a class="btn" href="<%= portfolioUrl %>" target="_blank" rel="noreferrer"><%= translations.ctaPortfolio %></a>
+        <a class="btn" href="#contact"><%= translations.ctaContact %></a>
+      </div>
+    </section>
 
-    </main>
-<footer>
+    <section id="about" class="card" data-aos="fade-up" data-aos-duration="700">
+      <h2><%= translations.aboutTitle %></h2>
+      <p><%= profile.summary[lang] %></p>
+      <p class="meta"><%= profile.location %></p>
+    </section>
 
-    <p> Versão <%=Version%></p>
-</footer>
+    <section id="experience" class="card" data-aos="fade-up" data-aos-duration="700">
+      <h2><%= translations.experienceTitle %></h2>
+      <div class="stack">
+        <% experience.forEach((job) => { %>
+          <article class="item" data-aos="fade-left" data-aos-duration="700">
+            <h3><%= job.company %></h3>
+            <p class="meta"><%= job.role %> | <%= job.period %></p>
+            <p><%= job.description %></p>
+          </article>
+        <% }) %>
+      </div>
+    </section>
 
+    <section id="education" class="card" data-aos="fade-up" data-aos-duration="700">
+      <h2><%= translations.educationTitle %></h2>
+      <div class="stack">
+        <% education.forEach((course) => { %>
+          <article class="item" data-aos="fade-left" data-aos-duration="700">
+            <h3><%= course.institution %></h3>
+            <p><%= course.description %></p>
+          </article>
+        <% }) %>
+      </div>
+    </section>
 
+    <section id="skills" class="card" data-aos="fade-up" data-aos-duration="700">
+      <h2><%= translations.skillsTitle %></h2>
+      <ul class="skills">
+        <% skills.forEach((skill) => { %>
+          <li><%= skill %></li>
+        <% }) %>
+      </ul>
+    </section>
+
+    <section id="highlights" class="card" data-aos="fade-up" data-aos-duration="700">
+      <h2><%= translations.highlightsTitle %></h2>
+      <ul class="feature-list">
+        <% highlights.forEach((item) => { %>
+          <li><%= item %></li>
+        <% }) %>
+      </ul>
+    </section>
+
+    <section id="certifications" class="card" data-aos="fade-up" data-aos-duration="700">
+      <h2><%= translations.certificationsTitle %></h2>
+      <ul class="feature-list">
+        <% certifications.forEach((item) => { %>
+          <li><%= item %></li>
+        <% }) %>
+      </ul>
+    </section>
+
+    <section id="projects" class="card" data-aos="fade-up" data-aos-duration="700">
+      <h2><%= translations.projectsTitle %></h2>
+      <% if (!projects.length) { %>
+        <p><%= translations.projectsEmpty %></p>
+      <% } %>
+      <div class="projects">
+        <% projects.forEach((project) => { %>
+          <article class="project project-card" data-aos="zoom-in-up" data-aos-duration="700">
+            <h3><a href="<%= project.url %>" target="_blank" rel="noreferrer"><%= project.name %></a></h3>
+            <p><%= project.description %></p>
+            <p class="meta">
+              <%= translations.languageLabel %>: <%= project.language %> |
+              <%= project.stars %> <%= translations.starsLabel %>
+              <% if (project.updatedAt) { %>
+                | <%= translations.updatedLabel %>: <%= new Date(project.updatedAt).toLocaleDateString(lang) %>
+              <% } %>
+            </p>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+
+    <section id="contact" class="card" data-aos="fade-up" data-aos-duration="700">
+      <h2><%= translations.contactTitle %></h2>
+      <div class="contact-links">
+        <a href="<%= github.url %>" target="_blank" rel="noreferrer"><%= translations.githubProfile %></a>
+        <a href="<%= linkedin %>" target="_blank" rel="noreferrer"><%= translations.linkedinProfile %></a>
+        <a href="<%= portfolioUrl %>" target="_blank" rel="noreferrer"><%= translations.portfolioProfile %></a>
+        <a href="mailto:<%= contact.email %>"><%= contact.email %></a>
+        <a href="tel:+5512996138668"><%= translations.phoneLabel %>: +55 12 99613-8668</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><%= translations.footerText %></p>
+    <p>v<%= version %></p>
+  </footer>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="/scripts/main.js"></script>
 </body>
 </html>

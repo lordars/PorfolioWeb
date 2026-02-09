@@ -1,21 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const curriculoController = require("../controllers/CurriculoControllers")
+const portfolioController = require("../controllers/CurriculoControllers");
 
-router.get("/",(req,res,next)=>{
-    res.render("index",{
-    title: "Meu primeiro servidor Express",
-    Version: "0.0.0"
-})
-
-});
-
-router.get("/curriculo",(req,res,next)=>{
-
-    const curriculoData = curriculoController.getData();
-    res.render("curriculo",curriculoData)
-})
-
-
+router.get("/", portfolioController.renderPortfolio);
+router.get("/curriculo", (req, res) => res.redirect("/pt-BR"));
+router.get("/:lang(pt-BR|pt|es|en)", portfolioController.renderPortfolio);
 
 module.exports = router;
